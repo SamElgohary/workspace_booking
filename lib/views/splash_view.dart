@@ -17,7 +17,7 @@ class _SplashViewState extends State<SplashView> {
 
   Future<void> _navigateToHome() async {
     // Simulate some initialization delay
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
     // Navigate to the home screen
     context.go('/home');
   }

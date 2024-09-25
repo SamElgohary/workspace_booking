@@ -7,6 +7,13 @@ final firebaseServiceProvider = Provider<FirebaseService>((ref) {
 });
 
 final workspaceListProvider = FutureProvider<List<Workspace>>((ref) async {
-  final service = ref.watch(firebaseServiceProvider);
-  return service.getWorkspaces();
+  final service = ref.read(firebaseServiceProvider);
+  try {
+    final workspaces = await service.getWorkspaces();
+    print('Workspaces loaded: $workspaces'); // Debug print
+    return workspaces;
+  } catch (e) {
+    print('Error fetching workspaces: $e'); // Error print
+    throw Exception('Failed to load workspaces');
+  }
 });

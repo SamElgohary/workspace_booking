@@ -14,6 +14,7 @@ class WorkspaceListView extends ConsumerWidget {
       appBar: AppBar(title: Text('Available Workspaces')),
       body: workspaceListAsync.when(
         data: (workspaces) {
+          debugPrint('workspaces  length ${workspaces.length}');
           return ListView.builder(
             itemCount: workspaces.length,
             itemBuilder: (context, index) {

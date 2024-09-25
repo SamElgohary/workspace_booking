@@ -8,7 +8,7 @@ class FirebaseService {
   Future<List<Workspace>> getWorkspaces() async {
     var snapshots = await _db.collection('workspaces').get();
     return snapshots.docs
-        .map((doc) => Workspace.fromMap(doc.data(), doc.id))
+        .map((doc) => Workspace.fromMap(doc.data() as Map<String, dynamic>, doc.id))
         .toList();
   }
 
