@@ -29,7 +29,7 @@ class ConfirmationView extends StatelessWidget {
             Text('Amenities: ${workspace.amenities.join(', ')}'),
             SizedBox(height: 10),
             Text('Date: $formattedDate'),
-            Text('Time Slot: ${booking.timeSlot}'),
+            Text('Time Slot: ${booking.startTime} to ${booking.endTime}'),
             Spacer(),
             ElevatedButton(
               child: Text('Back to Home'),

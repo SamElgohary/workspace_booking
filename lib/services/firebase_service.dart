@@ -27,7 +27,8 @@ class FirebaseService {
         id: doc.id,
         workspaceId: data['workspaceId'],
         date: DateTime.parse(data['date']),
-        timeSlot: data['timeSlot'],
+        startTime: data['start_time'],
+        endTime: data['end_time'],
       );
     }).toList();
   }

@@ -75,7 +75,8 @@ class BookingView extends ConsumerWidget {
       id: '',
       workspaceId: workspace.id,
       date: viewModel.selectedDate!,
-      timeSlot: '${DateFormat('hh:mm a').format(viewModel.selectedStart!.time)} to ${DateFormat('hh:mm a').format(viewModel.selectedEnd!.time)}',
+      startTime: DateFormat('hh:mm a').format(viewModel.selectedStart!.time),
+      endTime: DateFormat('hh:mm a').format(viewModel.selectedEnd!.time),
     );
 
     await firebaseService.createBooking(newBooking);
