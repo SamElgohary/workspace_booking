@@ -1,8 +1,10 @@
+import 'package:intl/intl.dart';
+
 class Booking {
   final String id;
   final String workspaceId;
-  final String startTime;
-  final String endTime;
+  final DateTime startTime;
+  final DateTime endTime;
   final DateTime date;
 
   Booking({
@@ -16,7 +18,7 @@ class Booking {
   Map<String, dynamic> toMap() {
     return {
       'workspaceId': workspaceId,
-      'date': date.toIso8601String(),
+      'date': DateFormat('yyyy-MM-dd').format(date), // Format date as "yyyy-MM-dd"
       'start_time': startTime,
       'end_time': endTime,
     };

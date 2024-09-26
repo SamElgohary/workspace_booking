@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
@@ -14,33 +15,7 @@ class BookingTimeViewModel extends ChangeNotifier {
   TimeSlot? selectedStart;
   TimeSlot? selectedEnd;
 
-  // void generateTimeSlotsForDay(DateTime date) {
-  //   selectedDate = date;
-  //   slots.clear();
-  //   DateTime startTime = DateTime(date.year, date.month, date.day, 0, 0);
-  //   for (int i = 0; i < 48; i++) { // 30-minute intervals
-  //     slots.add(TimeSlot(time: startTime.add(Duration(minutes: 30 * i))));
-  //   }
-  //   notifyListeners();
-  // }
-
-  void generateTimeSlotsForDay(DateTime date) {
-    selectedDate = date;
-    slots.clear();
-
-    // Set start time to 8:00 AM
-    DateTime startTime = DateTime(date.year, date.month, date.day, 8, 0);
-
-    // We want 30-minute intervals from 8:00 AM to 11:00 PM (15 hours = 30 slots)
-    int totalSlots = 15 * 2; // 15 hours * 2 = 30 slots
-
-    for (int i = 0; i < totalSlots; i++) {
-      slots.add(TimeSlot(time: startTime.add(Duration(minutes: 30 * i))));
-    }
-
-    notifyListeners();
-  }
-
+  List<Booking> bookedSlots = [];
 
   void selectTimeSlot(TimeSlot slot) {
     if (selectedStart == null || selectedEnd != null) {
@@ -71,16 +46,69 @@ class BookingTimeViewModel extends ChangeNotifier {
 
   Future<Booking> confirmBooking(Workspace workspace, WidgetRef ref) async {
     final firebaseService = ref.read(firebaseServiceProvider);
+    String formattedDate = DateFormat('yyyy-MM-dd').format(selectedDate!);
+    debugPrint ('formattedDate $formattedDate');
 
     final newBooking = Booking(
       id: '',
       workspaceId: workspace.id,
-      date: selectedDate!,
-      startTime: DateFormat('hh:mm a').format(selectedStart!.time),
-      endTime: DateFormat('hh:mm a').format(selectedEnd!.time),
+      date: DateTime.parse(formattedDate),  // Store the date as DateTime
+      startTime: selectedStart!.time,
+      endTime: selectedEnd!.time,
     );
 
     await firebaseService.createBooking(newBooking);
 
     return newBooking; // Return the newly created booking
-  }}
+  }
+
+  void generateTimeSlotsForDay(DateTime date, List<Booking> bookingsForDay) {
+    selectedDate = date;
+    slots.clear();
+    bookedSlots = bookingsForDay;  // Save the fetched bookings
+
+
+
+    // Set start time to 8:00 AM
+    DateTime startTime = DateTime(date.year, date.month, date.day, 8, 0);
+    int totalSlots = 15 * 2; // 15 hours * 2 = 30 slots
+
+    for (int i = 0; i < totalSlots; i++) {
+      DateTime slotTime = startTime.add(Duration(minutes: 30 * i));
+
+      // Check if this slot is booked
+
+      debugPrint('isTimeSlotBooked slotTime $slotTime  bookingsForDay $bookingsForDay');
+      bool isBooked = _isTimeSlotBooked(slotTime, bookingsForDay);
+
+      slots.add(TimeSlot(
+        time: slotTime,
+        isBooked: isBooked, // Set isBooked flag here
+      ));
+      debugPrint('Slot: ${DateFormat('hh:mm a').format(slotTime)}, isBooked: $isBooked');
+
+    }
+
+    notifyListeners();
+  }
+
+  bool _isTimeSlotBooked(DateTime slotTime, List<Booking> bookingsForDay) {
+    for (var booking in bookingsForDay) {
+      DateTime startTime = booking.startTime;
+      DateTime endTime = booking.endTime;
+
+      // Ensure both are on the same date before comparing time
+      if (DateUtils.isSameDay(slotTime, startTime)) {
+        if ((slotTime.isAtSameMomentAs(startTime) || slotTime.isAfter(startTime)) &&
+            slotTime.isBefore(endTime)) {
+          print('Slot: ${DateFormat('hh:mm a').format(slotTime)} is booked!');
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+
+
+}

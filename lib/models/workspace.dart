@@ -7,7 +7,7 @@ class Workspace {
   final String openingHours;
   final String price;
   final int capacity;
-  final int spaceId;
+  final String spaceId;
   final List<String> amenities;
 
   Workspace({

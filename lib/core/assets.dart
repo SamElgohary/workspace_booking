@@ -10,7 +10,7 @@ class Assets {
 class _Images {
   const _Images();
 
-  final String logo = 'assets/images/logo.png';
+  final String confirmed = 'assets/images/confirmed.png';
   final String splashLogo = 'assets/images/splash.png';
 }
 
