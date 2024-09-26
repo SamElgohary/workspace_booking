@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 
 import '../ui/components/bottomButton.dart';
 import '../ui/components/icon_and_text_row.dart';
+import '../ui/widgets/availability_line.dart';
 import '../ui/widgets/facilities_widget.dart';
 import '../utlis/colors.dart';
 import '../utlis/size.dart';
@@ -39,183 +40,141 @@ class WorkspaceDetailView extends StatelessWidget {
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical:16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal:16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  CachedNetworkImage(
-                    imageUrl: workspace.img,
-                    imageBuilder: (context, imageProvider) => Container(
-                      height: 180,
-                      decoration: BoxDecoration(
-                        borderRadius: const BorderRadius.all(Radius.circular(8),),
-                        image: DecorationImage(
-                          image: imageProvider,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal:16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              CachedNetworkImage(
+                imageUrl: workspace.img,
+                imageBuilder: (context, imageProvider) => Container(
+                  height: 200,
+                  decoration: BoxDecoration(
+                    borderRadius: const BorderRadius.all(Radius.circular(8),),
+                    image: DecorationImage(
+                      image: imageProvider,
+                      fit: BoxFit.cover,
                     ),
-                    placeholder: (context, url) => const CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => const Icon(Icons.error),
                   ),
-                  const SizedBox(height: 8,),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal:2.0),
-                    child: Text(workspace.name,
-                        style:const TextStyle(
-                          color:Colors.black,
-                          fontSize: 16,fontWeight:FontWeight.w600, )),
+                ),
+                placeholder: (context, url) => const CircularProgressIndicator(),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
+              const SizedBox(height: 8,),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal:2.0),
+                child: Text(workspace.name,
+                    style:const TextStyle(
+                      color:Colors.black,
+                      fontSize: 16,fontWeight:FontWeight.w600, )),
+              ),
+              const SizedBox(height: 4,),
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconAndTextRow(
+                    icon: Icons.location_on,
+                    text: workspace.location,
+                    horizontalSpace: 0,
                   ),
-                  const SizedBox(height: 4,),
+                  IconAndTextRow(
+                    icon: Icons.star,
+                    iconColor: Colors.yellow,
+                    text: workspace.rate,
+                  )
+                ],
+              ),
+              const SizedBox(height: 8,),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal:2.0),
+                child: Text(workspace.price,
+                    style:const TextStyle(
+                        color:primaryColor,
+                        fontSize: 16,fontWeight: FontWeight.bold )),
+              ),
+              const SizedBox(height: 24,),
+
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal:2.0),
+                child: Text('Facilities',
+                    style:TextStyle(
+                      color:Colors.black,
+                      fontSize: 16,fontWeight:FontWeight.w600, )),
+              ),
+              const SizedBox(height: 8,),
+              FacilitiesWidget(facilities: workspace.amenities,),
+              const SizedBox(height: 24,),
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal:2.0),
+                child: Text('Working Hours',
+                    style:TextStyle(
+                      color:Colors.black,
+                      fontSize: 16,fontWeight:FontWeight.w600, )),
+              ),
+              const SizedBox(height: 8,),
+              Column(
+                children: [
+                  // Day Headers
                   Row(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      IconAndTextRow(
-                        icon: Icons.location_on,
-                        text: workspace.location,
-                        horizontalSpace: 0,
-                      ),
-                      IconAndTextRow(
-                        icon: Icons.star,
-                        iconColor: Colors.yellow,
-                        text: workspace.rate,
-                      )
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: const [
+                      Text("Sun", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
+                      Text("Mon", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
+                      Text("Tue", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
+                      Text("Wed", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
+                      Text("Thu", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
+                      Text("Fri", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
+                      Text("Sat", style: TextStyle(color: Colors.black54, fontWeight: FontWeight.bold)),
                     ],
                   ),
-                  const SizedBox(height: 8,),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal:2.0),
-                    child: Text(workspace.price,
-                        style:const TextStyle(
-                            color:primaryColor,
-                            fontSize: 16,fontWeight: FontWeight.bold )),
+                  SizedBox(height: 8), // Space between headers and lines
+
+                  // Availability Lines
+                  const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      AvailabilityLine(color:Colors.red),
+                      AvailabilityLine(color:Colors.orange),
+                      AvailabilityLine(color:Colors.orange),
+                      AvailabilityLine(color:Colors.orange),
+                      AvailabilityLine(color:Colors.red),
+                      AvailabilityLine(color:Colors.grey),
+                      AvailabilityLine(color:Colors.orange),
+                    ],
                   ),
-                  const SizedBox(height: 24,),
-                  Center(
-                    child: Container(
-                      width:  ScreenSize.width(context) / 1.3,
-                      padding: const EdgeInsets.symmetric(horizontal:8.0),
-                      decoration: BoxDecoration(
-                        color: Colors.grey[700],
-                        borderRadius: BorderRadius.circular(16.0),
-                        border: Border.all(
-                          color: Colors.blueGrey,
-                          width: 2.0,
-                        ),
-                      ),
-                      // Adjust based on your needs
-                      child: Column(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const SizedBox(height: 16),
-                          const Text(
-                            "OPENING HOURS",
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
+                  SizedBox(height: 8), // Space between lines and time slots
 
-                          Padding(
-                            padding: const EdgeInsets.only(bottom:16.0),
-                            child: Container(
-                              decoration: const BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(16.0),  // Adjust the radius value as needed
-                                  bottomLeft: Radius.circular(16.0),
-                                ),),
-                              width:  (ScreenSize.width(context) / 1.3) - 64 ,
+                  // Time Slots
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: List.generate(7, (index) => "08:00AM\n09:00PM").map((timeSlot) {
+              return SizedBox(
+                width: 40,
+                  child: Text(timeSlot, style: TextStyle(color: Colors.black87,fontSize: 9),));
+            }).toList(), // Convert the generated list into a List of widgets
+          ),
 
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const SizedBox(height: 8,),
-                                  Text(
-                                    "SUNDAY – THURSDAY",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey[800],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 4),
-                                  Text(
-                                    workspace.openingHours,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.grey[800],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 16), // Spacing between sections
-                                  Text(
-                                    "FRIDAY",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.grey[800],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                  Text(
-                                    "01:00PM - 10:00pm",
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.grey[800],
-                                    ),
-                                  ),
-                                  const SizedBox(height: 8),
-                                ],
-                              ),
-                            ),
-                          ),
-
-
-                        ],
-                      ),
-                    ),),
-                  const SizedBox(height: 24,),
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal:2.0),
-                    child: Text('Facilities',
-                        style:TextStyle(
-                          color:Colors.black,
-                          fontSize: 16,fontWeight:FontWeight.w600, )),
+                  const SizedBox(height: 32,),
+                  BottomButton(
+                    text:'Check Availability',
+                    onTap: () {
+                      // Handle button press action
+                      debugPrint("Check Availability Button pressed");
+                      context.go(
+                        '/home/workspace/${workspace.id}/booking',
+                        extra: workspace,
+                      );
+                    },
                   ),
                 ],
               ),
-            ),
-
-            Expanded(child: FacilitiesWidget(facilities: workspace.amenities,)),
-
-
-          ],
+            ],
+          ),
         ),
       ),
 
-      bottomNavigationBar:  BottomButton(
-        text:'Check Availability',
-        onTap: () {
-          // Handle button press action
-          debugPrint("Check Availability Button pressed");
-          context.go(
-            '/home/workspace/${workspace.id}/booking',
-            extra: workspace,
-          );
-        },
-      ),
     );
   }
 }

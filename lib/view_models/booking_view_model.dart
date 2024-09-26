@@ -105,7 +105,7 @@ class BookingTimeViewModel extends ChangeNotifier {
 
     // Set start time to 8:00 AM
     DateTime startTime = DateTime(date.year, date.month, date.day, 8, 0);
-    int totalSlots = 15 * 2; // 15 hours * 2 = 30 slots
+    int totalSlots = 27; // 15 hours * 2 = 30 slots
 
     for (int i = 0; i < totalSlots; i++) {
       DateTime slotTime = startTime.add(Duration(minutes: 30 * i));

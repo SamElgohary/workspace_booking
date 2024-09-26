@@ -47,7 +47,7 @@ class RouterInitial {
               builder: (context, state) {
                 final bookingData = state.extra as Map<String, dynamic>;
                 final workspace = bookingData['workspace'] as Workspace;
-                final booking = bookingData['booking'] as Booking; // Now passing the correct Booking object
+                final booking = bookingData['booking'] as Booking;
 
                 return ConfirmationView(
                   workspace: workspace,

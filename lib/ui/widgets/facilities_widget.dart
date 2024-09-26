@@ -8,13 +8,9 @@ class FacilitiesWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Wrap(
-          spacing: 4.0, // spacing between items
-          children: facilities.map((facility) => buildFacilityItem(facility)).toList(),
-        ),
-      ),
+    return Wrap(
+      spacing: 4.0, // spacing between items
+      children: facilities.map((facility) => buildFacilityItem(facility)).toList(),
     );
   }
 

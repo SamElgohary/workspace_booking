@@ -18,9 +18,9 @@ class BottomButton extends StatelessWidget {
       width: MediaQuery.of(context).size.width - 32, // Equivalent to ScreenSize.width(context) - 32
       decoration: BoxDecoration(
         color: primaryColor, // Replace with `primaryColor` if needed
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(8.0),
-          topRight: Radius.circular(8.0),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(8.0),
+
         ),
         border: Border.all(
           color: Colors.blueGrey,
