@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 
 const primaryColor = Color(0xFF398378);
+const primaryColorAccent = Color(0x80398378);
 const accentColorBlue = Color(0xFF4158A6);
 const accentColorCoffee = Color(0xFFF1DEC6);
 const accentColorTurquoise = Color(0xFF179BAE);

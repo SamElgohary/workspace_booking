@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../models/workspace.dart';
 import 'package:go_router/go_router.dart';
 
+import '../ui/components/bottomButton.dart';
 import '../ui/components/icon_and_text_row.dart';
 import '../ui/widgets/facilities_widget.dart';
 import '../utlis/colors.dart';
@@ -204,38 +205,16 @@ class WorkspaceDetailView extends StatelessWidget {
         ),
       ),
 
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.symmetric(vertical:8.0),
-        width:  ScreenSize.width(context) - 32,
-        decoration: BoxDecoration(
-          color: primaryColor,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(8.0),  // Adjust the radius value as needed
-            topRight: Radius.circular(8.0),
-          ),
-          border: Border.all(
-            color: Colors.blueGrey,
-            width: 2.0,
-          ),
-        ),
-        child: GestureDetector(
-          onTap: () {
-            // Handle button press action
-            debugPrint("Check Availability Button pressed");
-            context.go(
-              '/home/workspace/${workspace.id}/booking',
-              extra: workspace,
-            );
-          },
-          child: const Text(
-            'Check Availability',
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 18,
-            ),
-          ),
-        ),
+      bottomNavigationBar:  BottomButton(
+        text:'Check Availability',
+        onTap: () {
+          // Handle button press action
+          debugPrint("Check Availability Button pressed");
+          context.go(
+            '/home/workspace/${workspace.id}/booking',
+            extra: workspace,
+          );
+        },
       ),
     );
   }

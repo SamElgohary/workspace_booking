@@ -31,6 +31,8 @@ class MyApp extends ConsumerWidget {
       theme: ThemeData(
         primarySwatch: primaryMaterialColor,
         textTheme: GoogleFonts.robotoTextTheme(),
+        primaryColor: primaryMaterialColor,
+        progressIndicatorTheme: const ProgressIndicatorThemeData(color: primaryColor),
       ),
       routerDelegate: router.routerDelegate,
       routeInformationParser: router.routeInformationParser,
