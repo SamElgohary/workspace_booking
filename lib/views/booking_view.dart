@@ -135,7 +135,7 @@ class _BookingViewState extends ConsumerState<BookingView> {
                       : (slot.isSelected ? primaryColor : Colors.grey[300]);
 
                   return InkWell(
-                    onTap: slot.isBooked ? null : () => bookingViewModel.selectTimeSlot(slot), // Disable tap if booked
+                    onTap: slot.isBooked ? null : () => bookingViewModel.selectTimeSlot(slot,context), // Disable tap if booked
                     child: Container(
                       alignment: Alignment.center,
                       decoration: BoxDecoration(

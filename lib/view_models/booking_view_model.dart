@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../models/TimeSlot.dart';
 import '../models/booking.dart';
@@ -17,21 +18,54 @@ class BookingTimeViewModel extends ChangeNotifier {
 
   List<Booking> bookedSlots = [];
 
-  void selectTimeSlot(TimeSlot slot) {
+  void selectTimeSlot(TimeSlot slot, BuildContext context) {
+    // If selection is starting new
+    debugPrint('selectTimeSlot start');
     if (selectedStart == null || selectedEnd != null) {
+      debugPrint('selectTimeSlot  selectedStart $selectedStart selectedEnd $selectedEnd');
+
       slots.forEach((s) => s.isSelected = false); // Reset selections
       selectedStart = slot;
       selectedEnd = null;
       slot.isSelected = true;
     } else {
+      // If selecting end time
+      debugPrint('selectTimeSlot selecting end time ');
+
       if (slot.time.isBefore(selectedStart!.time)) {
+        debugPrint('selectTimeSlot isBefore');
+
         selectedStart = slot;
       }
       selectedEnd = slot;
-      applySelection();
+
+      // Check if the selected time range overlaps with any booked slots
+      bool isOverlap = _isTimeRangeOverlappingWithBookedSlots(selectedStart!, selectedEnd!);
+
+      if (isOverlap) {
+        // Show a message that the selected range contains booked slots
+        debugPrint('selectTimeSlot isOverlap');
+
+        Fluttertoast.showToast(
+            msg: "This Time Already Booked",
+            toastLength: Toast.LENGTH_SHORT,
+            gravity: ToastGravity.BOTTOM,
+            timeInSecForIosWeb: 1,
+            backgroundColor: Colors.black54,
+            textColor: Colors.white,
+            fontSize: 16.0
+        );
+
+      } else {
+        debugPrint('selectTimeSlot applySelection');
+
+        applySelection();
+      }
     }
+
     notifyListeners();
   }
+
 
   void applySelection() {
     bool inRange = false;
@@ -110,5 +144,18 @@ class BookingTimeViewModel extends ChangeNotifier {
   }
 
 
+  bool _isTimeRangeOverlappingWithBookedSlots(TimeSlot startSlot, TimeSlot endSlot) {
+    for (var booking in bookedSlots) {
+      DateTime bookedStartTime = booking.startTime;
+      DateTime bookedEndTime = booking.endTime;
+
+      // Check if the selected time range overlaps with the booked time range
+      if ((startSlot.time.isBefore(bookedEndTime) && endSlot.time.isAfter(bookedStartTime)) ||
+          startSlot.time.isAtSameMomentAs(bookedStartTime) || endSlot.time.isAtSameMomentAs(bookedEndTime)) {
+        return true;
+      }
+    }
+    return false;
+  }
 
 }
