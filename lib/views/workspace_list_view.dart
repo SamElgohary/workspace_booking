@@ -23,6 +23,7 @@ class WorkspaceListView extends ConsumerWidget {
             const Text('Hi Sara, Where You',style:TextStyle(color:Colors.black,fontSize: 18)),
             const Text('Wanna Work Today?',style:TextStyle(color:Colors.black87,fontSize: 16,fontWeight:  FontWeight.w600, )),
             const SizedBox(height: 16,),
+
             const SizedBox(
               height: 40,
               child: TextField(

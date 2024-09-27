@@ -17,6 +17,6 @@ class _Images {
 class _Icons {
   const _Icons();
 
-  final String scanCard = 'assets/icons/id.png';
+
 }
 

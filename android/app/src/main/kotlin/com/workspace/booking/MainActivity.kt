@@ -1,4 +1,4 @@
-package com.workspace.booking.workspace_booking
+package com.workspace.booking
 
 import io.flutter.embedding.android.FlutterActivity
 
